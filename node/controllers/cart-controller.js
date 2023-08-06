@@ -57,8 +57,7 @@ exports.getCart = async (req, res, next) => {
 
         if (!cartResponse) throw new Error(404, "Cart Not Found");
         const processedCartResponse = cartResponse.map((cartItem) => {
-            const product = cartItem.products[0]; // Assuming there is only one product in the array
-
+            const product = cartItem.products[0];
             return {
                 ...cartItem.dataValues,
                 title: product.title,
