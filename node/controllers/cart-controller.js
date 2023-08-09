@@ -2,34 +2,35 @@ const db = require("../models");
 
 exports.addToCart = async (req, res, next) => {
     try {
-        let { id } = req.userData
-        let productId = req.body.id
-        let quantity = req.body.quantity
-        let getUserCart = await db.Cart.findOne({
-            where: {
-                user_id: id,
-                product_id: productId,
-            }
-        })
-        let cartObj = {
-            user_id: id,
-            product_id: productId,
-            quantities: quantity
-        }
+        let { _id } = req.userData
+        console.log("-->>>>", _id);
+        // let productId = req.body.id
+        // let quantity = req.body.quantity
+        // let getUserCart = await db.Cart.findOne({
+        //     where: {
+        //         user_id: id,
+        //         product_id: productId,
+        //     }
+        // })
+        // let cartObj = {
+        //     user_id: id,
+        //     product_id: productId,
+        //     quantities: quantity
+        // }
 
-        if (getUserCart) {
-            cartObj.quantities = getUserCart.quantities + quantity
-            let cartResponse = await db.Cart.update(cartObj,
-                {
-                    where: {
-                        user_id: id,
-                        product_id: productId,
-                    }
-                });
-        }
-        else {
-            let cartResponse = await db.Cart.create(cartObj);
-        }
+        // if (getUserCart) {
+        //     cartObj.quantities = getUserCart.quantities + quantity
+        //     let cartResponse = await db.Cart.update(cartObj,
+        //         {
+        //             where: {
+        //                 user_id: id,
+        //                 product_id: productId,
+        //             }
+        //         });
+        // }
+        // else {
+        //     let cartResponse = await db.Cart.create(cartObj);
+        // }
 
         // if (!prodResponse) throw new Error(404, "Not Found");
         return res.status(200).send({ message: "Success" });

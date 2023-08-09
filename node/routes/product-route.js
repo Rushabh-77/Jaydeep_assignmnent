@@ -9,6 +9,8 @@ module.exports = app => {
 
 
 	router.get("/getProduct", productController.getProducts);
+	// router.post("/createProduct", productController.cerateProducts);
+
 
 
 

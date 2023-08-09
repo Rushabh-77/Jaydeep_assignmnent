@@ -1,4 +1,3 @@
-const db = require("../models");
 const userAuth = require("../middleware/userAuth");
 const { RESPONSE_CODES, RESPONSE_MESSAGES, RESPONSES } = require("../helpers/errors/ResponseCodes");
 const CustomError = require("../helpers/errors/CustomError");
@@ -8,10 +7,9 @@ exports.userLogin = async (req, res, next) => {
   try {
     let { email, password } = req.body;
     let jwtToken;
-    let userResponse = await db.Users.findOne({
-      where: { email: email }
+    let userResponse = await userData.findOne({
+      email: email
     });
-
     if (!userResponse) throw new CustomError(RESPONSE_CODES.NOT_FOUND, RESPONSE_MESSAGES.NOT_FOUND);
     if (userResponse.password !== password) throw new CustomError(RESPONSE_CODES.UNPROCESSABLE_ENTITY, RESPONSE_MESSAGES.PASSWORD.INCORRECT)
     jwtToken = userAuth.generateAccessToken(userResponse.email);
