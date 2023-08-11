@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { baseUrl } from "../..helper";
+import { baseUrl } from "../../helper";
 import HomePage from "../../page/HomePage";
 import ProductPage from "../../page/ProductPage";
 import Login from "../../page/Login";

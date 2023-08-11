@@ -1,0 +1,6 @@
+.header-main{
+  display: block;
+  .header-container{
+    display: flex;
+  }
+}
