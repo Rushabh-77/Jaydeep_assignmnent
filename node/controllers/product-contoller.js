@@ -16,8 +16,8 @@ exports.getProducts = async (req, res, next) => {
 // exports.cerateProducts = async (req, res, next) => {
 //     try {
 //         let obj = {
-//             title: "test",
-//             description: "test description",
+//             title: "test 5",
+//             description: "test 5 description",
 //             quantity: 1,
 //             shipping_cost: 100,
 //             image: "https://st.depositphotos.com/23751790/54571/i/600/depositphotos_545717712-stock-photo-sunset-taken-road.jpg",

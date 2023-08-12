@@ -1,4 +1,5 @@
 const { cartData } = require("../models/cart");
+const { orderData } = require("../models/order");
 
 exports.addToCart = async (req, res, next) => {
     try {
@@ -57,9 +58,9 @@ exports.getCart = async (req, res, next) => {
 
 exports.createOrder = async (req, res, next) => {
     try {
-        let { id } = req.userData
+        let { _id } = req.userData
         for (const item of req.body.cartItems) {
-            await db.Orders.create({
+            await orderData.create({
                 user_id: id,
                 product_id: item.product_id,
                 quantity: item.quantities,
@@ -68,12 +69,13 @@ exports.createOrder = async (req, res, next) => {
                 order_updated_at: item.updatedAt,
             });
         }
-        let deleterCart = await db.Cart.destroy({
-            where: { user_id: id, }
+        let deleterCart = await orderData.destroy({
+            user_id: _id
         })
         return res.status(200).send({ message: "Cart data has been stored" });
     } catch (error) {
         console.error('Error storing cart data in the Order table:', error);
+        next(error)
     }
 };
 
