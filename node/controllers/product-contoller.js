@@ -1,4 +1,6 @@
 const { productData } = require("../models/product");
+const { commentData } = require("../models/comments");
+
 
 exports.getProducts = async (req, res, next) => {
     try {
@@ -15,8 +17,10 @@ exports.getProductDetails = async (req, res, next) => {
     try {
         let id = req.params.id
         let prodResponse = await productData.findById(id);
+        const comments = await commentData.find({ product_id: id });
+
         if (!prodResponse) throw new Error(404, "Prodcuts Not Found");
-        return res.status(200).send({ message: "Success", data: { prodResponse } });
+        return res.status(200).send({ message: "Success", data: { prodResponse, comments } });
     } catch (error) {
         console.log("error", error);
         next(error);

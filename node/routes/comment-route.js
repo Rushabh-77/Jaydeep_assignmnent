@@ -6,12 +6,7 @@ module.exports = app => {
 
 
 
-    router.get("/getCommnents", commentController.getComments);
     router.post("/createComments", commentController.createComments);
-
-
-
-
 
     app.use('/api/comment', router);
 };

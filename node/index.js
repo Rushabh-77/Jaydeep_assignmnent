@@ -38,6 +38,7 @@ app.get('/api/user', (req, res, next) => {
     }
 })
 
+app.use('/api', authenticateAppUserToken)
 
 require("./routes/auth-route")(app)
 require("./routes/product-route")(app)

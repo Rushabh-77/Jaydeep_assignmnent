@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.top-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal-dialog input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Style the star icons */
+.modal-dialog input[type="radio"] + svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: #ffc107; /* Color for filled stars */
+}
