@@ -43,6 +43,8 @@ require("./routes/auth-route")(app)
 require("./routes/product-route")(app)
 require("./routes/cart-route")(app)
 require("./routes/comment-route")(app)
+require("./routes/user-route")(app)
+
 
 
 

@@ -6,11 +6,10 @@ const { userData } = require("../models/users");
 exports.getUserProfile = async (req, res, next) => {
     try {
         let { _id } = req.userData
-        let userResponse = await userData.findById({
-            _id: _id
-        });
+        let userResponse = await userData.findById(_id);
         if (!userResponse) throw new CustomError(RESPONSE_CODES.NOT_FOUND, RESPONSE_MESSAGES.NOT_FOUND);
-        return res.status(RESPONSE_CODES.SUCCESS).send({ ...RESPONSES.SUCCESS, data: { token: userResponse } });
+        
+        return res.status(RESPONSE_CODES.SUCCESS).send({ ...RESPONSES.SUCCESS, userResponse });
     } catch (error) {
         console.log("Login error", error);
         next(error);
@@ -20,21 +19,20 @@ exports.getUserProfile = async (req, res, next) => {
 
 exports.updateUserProfile = async (req, res, next) => {
     try {
-        const { _id } = req.userData; 
-        const { first_name, shipping_address, email } = req.body; 
-
+        const { _id } = req.userData;
+        const { full_name, shipping_address, email } = req.body;
         const user = await userData.findById(_id);
 
         if (!user) {
             return res.status(RESPONSE_CODES.NOT_FOUND).json({ ...RESPONSES.NOT_FOUND });
         }
 
-        user.first_name = first_name;
+        user.first_name = full_name;
         user.shipping_address = shipping_address;
         user.email = email;
 
         await user.save();
-        
+
         res.status(RESPONSE_CODES.ACCEPTED).json({ ...RESPONSES.UPDATED });
     } catch (error) {
         next(error);

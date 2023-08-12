@@ -17,7 +17,7 @@ function Routing() {
       <Route exact path={`${baseUrl}/login`} element={<Login />} ></Route>
       <Route exact path={`${baseUrl}/Registration`} element={<Registration />} ></Route>
       <Route exact path={`${baseUrl}/cart`} element={<Cart />} />
-      <Route exact path={`${baseUrl}/user/profile/:id`} element={<ProfilePage />} />
+      <Route exact path={`${baseUrl}/user/profile`} element={<ProfilePage />} />
     </Routes>
   );
 }

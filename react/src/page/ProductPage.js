@@ -26,7 +26,7 @@ const ProductPage = () => {
 
   const getProduct = async () => {
     try {
-      const response = await axiosInstance.get(app_url + "/api/products/getProduct/" + product_id);
+      const response = await axiosInstance.get(app_url + "/products/getProduct/" + product_id);
       console.log(response.data.data.prodResponse)
       setProduct(response.data.data.prodResponse);
     } catch (error) {

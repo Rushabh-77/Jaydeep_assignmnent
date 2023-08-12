@@ -22,6 +22,10 @@ function HeaderBar() {
           <Nav.Item>
             <Nav.Link href='/Login'>login</Nav.Link>
             <Nav.Link href='/Registration'>Register</Nav.Link>
+            <Nav.Link href='/user/profile'>Profile Page</Nav.Link>
+            <Nav.Link href='/cart'>cart Page</Nav.Link>
+
+
 
           </Nav.Item>
           <Nav.Item>

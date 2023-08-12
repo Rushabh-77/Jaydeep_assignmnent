@@ -15,6 +15,6 @@ module.exports = app => {
 
 
 
-	app.use('/api/products', router);
+	app.use('/products', router);
 };
 

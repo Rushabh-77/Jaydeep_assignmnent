@@ -20,7 +20,7 @@ const LoginPage = () => {
       const loginData = { email, password };
       let response = await axiosInstance.post(app_url + "/login", loginData)
       sessionStorage.setItem('token', response.data.data.token);
-      window.location.href = "/admin/product";
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
