@@ -45,14 +45,16 @@ const ProductPage = () => {
   };
 
   const addToCart = async (prodId, quantity) => {
-    
     let cartObj = {
       id: prodId,
       quantity: quantity
     }
-    let cartData = await axiosInstance.post(app_url + '/api/cart/addToCart', cartObj)
-    if (cartData) {
+    if (!sessionStorage.getItem('token')) {
+      setAlertWiget({ title: "Please login to add product into cart.", type: 'warning' })
     }
+    let cartData = await axiosInstance.post(app_url + '/api/cart/addToCart', cartObj)
+    if (cartData) setAlertWiget({ title: "Product added to cart.", type: 'success' })
+
   }
 
   const handleReviewSubmit = () => {
@@ -127,8 +129,8 @@ const ProductPage = () => {
         </Card>
       }
       {alertWiget ?
-        <Alert key="success" variant="success">
-          Product Added to cart <Alert.Link href="/cart">Go To Cart</Alert.Link>.
+        <Alert key={alertWiget.type} variant={alertWiget.type}>
+          {alertWiget.type} <Alert.Link href="/cart">Go To Cart</Alert.Link>.
         </Alert>
         : null
       }
