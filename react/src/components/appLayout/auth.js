@@ -10,15 +10,9 @@ export function useAuth() {
 
 // Authentication provider component
 export function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    let userLogin = sessionStorage.getItem('token') ? true : false
+    const [isAuthenticated, setIsAuthenticated] = useState(userLogin);
 
-    // Function to log the user in
-    function login() {
-        if (sessionStorage.getItem('token')) {
-            console.log("111111111");
-            setIsAuthenticated(true);
-        }
-    }
 
     function logout(){
         console.log("222222222");
@@ -27,7 +21,6 @@ export function AuthProvider({ children }) {
 
     const value = {
         isAuthenticated,
-        login,
         logout
     };
 

@@ -6,7 +6,10 @@ import '../../styles/Headbar.css'
 
 function HeaderBar() {
   const { isAuthenticated, logout } = useAuth(); // Use the authentication context
-  console.log("isssssss", isAuthenticated, logout);
+  const logoutManage = ()=>{
+    logout();
+    window.location.href = '/'
+  }
   return (
     <Navbar bg='dark' expand="lg" data-bs-theme="dark" sticky='top' >
       <Container>
@@ -24,18 +27,18 @@ function HeaderBar() {
           </Nav>
         </Navbar.Collapse>
         <Nav className="justify-content-end">
-          {/* {isAuthenticated ? (
-            <> */}
+          {isAuthenticated ? (
+            <>
               <Nav.Link as={Link} to='/user/profile'>Profile Page</Nav.Link>
               <Nav.Link as={Link} to='/cart'>Cart Page</Nav.Link>
-              <Nav.Link onClick={logout}>Logout</Nav.Link>
-            {/* </>
+              <Nav.Link onClick={logoutManage}>Logout</Nav.Link>
+            </>
           ) : (
-            <> */}
+            <>
               <Nav.Link as={Link} to='/login'>Login</Nav.Link>
               <Nav.Link as={Link} to='/registration'>Register</Nav.Link>
-            {/* </> */}
-          {/* )} */}
+            </>
+          )}
         </Nav>
       </Container>
     </Navbar>
