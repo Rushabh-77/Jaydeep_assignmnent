@@ -1,34 +1,31 @@
-const db = require("../models");
+const { cartData } = require("../models/cart");
 
 exports.addToCart = async (req, res, next) => {
     try {
-        let { id } = req.userData
-        let productId = req.body.id
-        let quantity = req.body.quantity
-        let getUserCart = await db.Cart.findOne({
-            where: {
-                user_id: id,
-                product_id: productId,
-            }
+        let { _id } = req.userData
+        let { quantity, productId } = req.body
+        let getUserCart = await cartData.findOne({
+            user_id: _id,
+            product_id: productId,
+
         })
+
         let cartObj = {
-            user_id: id,
+            user_id: _id,
             product_id: productId,
             quantities: quantity
         }
 
         if (getUserCart) {
             cartObj.quantities = getUserCart.quantities + quantity
-            let cartResponse = await db.Cart.update(cartObj,
+            let cartResponse = await cartData.update(cartObj,
                 {
-                    where: {
-                        user_id: id,
-                        product_id: productId,
-                    }
+                    user_id: _id,
+                    product_id: productId,
                 });
         }
         else {
-            let cartResponse = await db.Cart.create(cartObj);
+            let cartResponse = await cartData.create(cartObj);
         }
 
         // if (!prodResponse) throw new Error(404, "Not Found");
@@ -41,33 +38,16 @@ exports.addToCart = async (req, res, next) => {
 
 
 exports.getCart = async (req, res, next) => {
-    let { id } = req.userData
+    let { _id } = req.userData
     try {
-        let cartResponse = await db.Cart.findAll({
-            where: {
-                user_id: id
-            },
-            include: [
-                {
-                    model: db.Products,
-                    attributes: ["title", "price", "image"],
-                }
-            ]
-        });
+        const cartResponse = await cartData.find({ user_id: _id })
+            .populate({
+                path: 'product_id',
+                select: 'title price image',
+                as: 'product'
+            }).exec();
 
-        if (!cartResponse) throw new Error(404, "Cart Not Found");
-        const processedCartResponse = cartResponse.map((cartItem) => {
-            const product = cartItem.products[0];
-            return {
-                ...cartItem.dataValues,
-                title: product.title,
-                price: product.price,
-                image: product.image,
-
-            };
-        });
-
-        return res.status(200).send({ message: "Success", data: { processedCartResponse } });
+        return res.status(200).send({ message: "Success", data: { cartResponse } });
     } catch (error) {
         console.log("error", error);
         next(error);

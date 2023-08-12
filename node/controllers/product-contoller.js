@@ -1,8 +1,8 @@
-const db = require("../models");
+const { productData } = require("../models/product");
 
 exports.getProducts = async (req, res, next) => {
     try {
-        let prodResponse = await db.Products.findAll();
+        let prodResponse = await productData.find();
         if (!prodResponse) throw new Error(404, "Prodcuts Not Found");
         return res.status(200).send({ message: "Success", data: { prodResponse } });
     } catch (error) {
@@ -10,3 +10,25 @@ exports.getProducts = async (req, res, next) => {
         next(error);
     }
 };
+
+
+//  For temporary use
+// exports.cerateProducts = async (req, res, next) => {
+//     try {
+//         let obj = {
+//             title: "test",
+//             description: "test description",
+//             quantity: 1,
+//             shipping_cost: 100,
+//             image: "https://st.depositphotos.com/23751790/54571/i/600/depositphotos_545717712-stock-photo-sunset-taken-road.jpg",
+//             price: 100
+//         }
+//         let prodResponse = await productData.create(obj);
+//         return res.status(200).send({ message: "Success" });
+
+//     } catch (error) {
+
+//     }
+// }
+
+

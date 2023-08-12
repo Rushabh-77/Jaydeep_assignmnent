@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../models");
+const { userData } = require("../models/users");
 // const CONFIG = require("../config");
 // const CustomError = require("../helpers/errors/CustomError");
 // const { RESPONSE_CODES, RESPONSE_MESSAGES } = require("../helpers/errors/ResponseCodes");
@@ -17,8 +18,8 @@ exports.authenticateAppUserToken = async (req, res, next) => {
     }
     let user = jwt.verify(token, "ecommerce");
     if (!user.email) throw new Error(422, "Unauthorized");
-    let appUser = await db.Users.findOne({
-      where: { email: user.email },
+    let appUser = await userData.findOne({
+      email: user.email
     });
     if (!appUser) throw new Error(422, "Not Found");
     req.userData = appUser;
