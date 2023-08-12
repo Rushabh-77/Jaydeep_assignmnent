@@ -22,9 +22,10 @@ exports.userLogin = async (req, res, next) => {
 
 
 exports.userRegister = async (req, res, next) => {
+
+  console.log("->>>>>>>>.", req.body);
   const {
     first_name,
-    last_name,
     email,
     password,
     shipping_address,
@@ -32,7 +33,7 @@ exports.userRegister = async (req, res, next) => {
   } = req.body;
 
   try {
-    if (!first_name || !last_name || !shipping_address || !email || !password) {
+    if (!first_name || !shipping_address || !email || !password) {
       throw new CustomError(RESPONSE_CODES.UNPROCESSABLE_ENTITY, RESPONSE_MESSAGES.MISSING_BODY)
     }
 
@@ -45,7 +46,6 @@ exports.userRegister = async (req, res, next) => {
     else {
       let userObj = {
         first_name: first_name,
-        last_name: last_name,
         shipping_address: shipping_address,
         email: email,
         password: password
