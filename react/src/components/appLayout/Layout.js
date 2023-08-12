@@ -8,7 +8,6 @@ function Layout() {
     <div className="layout-main">
       <HeaderBar />
       <Routing />
-      <Footer />
     </div>
   )
 }

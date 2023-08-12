@@ -11,6 +11,18 @@ exports.getProducts = async (req, res, next) => {
     }
 };
 
+exports.getProductDetails = async (req, res, next) => {
+    try {
+        let id = req.params.id
+        let prodResponse = await productData.findById(id);
+        if (!prodResponse) throw new Error(404, "Prodcuts Not Found");
+        return res.status(200).send({ message: "Success", data: { prodResponse } });
+    } catch (error) {
+        console.log("error", error);
+        next(error);
+    }
+};
+
 
 //  For temporary use
 // exports.cerateProducts = async (req, res, next) => {

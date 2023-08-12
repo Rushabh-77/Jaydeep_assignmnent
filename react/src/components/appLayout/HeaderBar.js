@@ -1,10 +1,10 @@
-import { Container, Nav, NavDropdown, NavItem, NavLink, Navbar } from 'react-bootstrap';
+import { Container, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 
 function HeaderBar() {
   return (
     <Navbar bg='dark' expand="lg" data-bs-theme="dark" sticky='top' >
       <Container>
-        <Navbar.Brand href="#home">Shopping App</Navbar.Brand>
+        <Navbar.Brand href="/">Shopping App</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
