@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require("cors"); // required cors to handle cors origin requires on our sever
 const db = require("./models"); // required database for initalization
 const { authenticateAppUserToken } = require("./middleware/userAuth");
+const { exceptionHandling } = require("./middleware/exceptionHandling");
 
 db()
 // create express app
@@ -47,6 +48,12 @@ require("./routes/comment-route")(app)
 require("./routes/user-route")(app)
 
 
+app.use(exceptionHandling);
+
+// @info: Error if Route not found
+app.use((req, res) => {
+  res.status(404).send("Page Not Found.")
+});
 
 
 

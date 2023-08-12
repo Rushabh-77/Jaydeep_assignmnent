@@ -52,8 +52,8 @@ const ProductPage = () => {
     if (!sessionStorage.getItem('token')) {
       return setToast({ message: "Please login to add product into cart.", type: 'warning', variant: 'warning', link: '/login', goto: 'Go to Login' })
     }
-    // let cartData = await axiosInstance.post(app_url + '/api/cart/addToCart', cartObj)
-    if (true) setToast({ message: "Product added to cart.", type: 'Light', variant: 'light', link: '/cart', goto: 'Go to Cart' })
+    let cartData = await axiosInstance.post(app_url + '/api/cart/addToCart', cartObj)
+    if (cartData) setToast({ message: "Product added to cart.", type: 'Light', variant: 'light', link: '/cart', goto: 'Go to Cart' })
   }
 
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Table, Button } from 'react-bootstrap';
 import { axiosInstance, app_url } from '../config/helper'; // Adjust path as needed
+import ToastComponent from '../components/global/ToastComponent';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [toast, setToast] = useState(null);
+
 
   useEffect(() => {
     fetchCart();
@@ -11,26 +14,53 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      const response = await axiosInstance.get(app_url + '/api/cart'); // Adjust API endpoint
-      setCartItems(response.data.cartItems);
+      const response = await axiosInstance.get(app_url + '/api/cart/getCart'); // Adjust API endpoint
+      console.log("response", response);
+      setCartItems(response.data.cartResponse);
     } catch (error) {
       console.error('Error fetching cart:', error);
     }
   };
 
-  const handleQuantityChange = async (itemId, quantity) => {
+  const handleQuantityChange = async (productId, quantity) => {
     try {
-      const response = await axiosInstance.put(app_url + '/api/cart/update', {
-        itemId,
-        quantity,
-      });
+      const updatedCartItems = cartItems.map((item) =>
+        item.product_id._id === productId
+          ? { ...item, quantities: Number(quantity) }
+          : item
+      );
+
+      setCartItems(updatedCartItems);
+
+      const response = await axiosInstance.put(
+        app_url + '/api/cart/updateCart',
+        {
+          productId,
+          quantity,
+        }
+      );
       if (response.data.status === 'success') {
-        fetchCart();
       }
     } catch (error) {
       console.error('Error updating quantity:', error);
     }
   };
+
+  const createOrder = async () => {
+    try {
+      const response = await axiosInstance.post(
+        app_url + '/api/cart/createOrder',
+        { cartItems }
+      );
+      if (response.data.message === 'Cart data has been stored') {
+        console.log('Order created successfully');
+        return setToast({ message: "Order Created Successfully", type: 'success', variant: 'warning' })
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  };
+
 
   return (
     <Container>
@@ -47,23 +77,38 @@ const Cart = () => {
         <tbody>
           {cartItems.map((item) => (
             <tr key={item._id}>
-              <td>{item.productName}</td>
+              <td>{item.product_id.title}</td>
               <td>
                 <input
                   type="number"
-                  value={item.quantity}
+                  value={item.quantities}
                   onChange={(e) =>
-                    handleQuantityChange(item._id, e.target.value)
+                    handleQuantityChange(item.product_id._id, e.target.value)
                   }
                 />
               </td>
-              <td>{item.price}</td>
-              <td>{item.price * item.quantity}</td>
+              <td>{item.product_id.price}</td>
+
+              <td>{item.product_id.price * item.quantities}</td>
             </tr>
           ))}
         </tbody>
       </Table>
-      <Button variant="primary">Order Now</Button>
+      <Button variant="primary" onClick={createOrder}>
+        Order Now
+      </Button>
+
+      {toast ? <ToastComponent
+        title={"Take Action."}
+        type={toast.type}
+        variant={toast.variant}
+        message={toast.message}
+        onClose={() => setToast(null)}
+        link={toast.link}
+        goto={toast.goto}
+      />
+        : null}
+
     </Container>
   );
 };

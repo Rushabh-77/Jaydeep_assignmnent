@@ -23,7 +23,6 @@ exports.userLogin = async (req, res, next) => {
 
 exports.userRegister = async (req, res, next) => {
 
-  console.log("->>>>>>>>.", req.body);
   const {
     first_name,
     email,

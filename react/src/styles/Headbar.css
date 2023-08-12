@@ -1,0 +1,37 @@
+/* HeaderBar.css */
+
+/* Style for the top bar */
+.navbar {
+    background-color: #343a40;
+    padding: 10px 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0 10px;
+    transition: color 0.3s;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #ffc107; /* Change color on hover */
+  }
+  
+  /* Style for the logout link */
+  .navbar-nav .logout-link {
+    color: #dc3545;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: color 0.3s;
+  }
+  
+  .navbar-nav .logout-link:hover {
+    color: #ff5252; /* Change color on hover */
+  }
+  

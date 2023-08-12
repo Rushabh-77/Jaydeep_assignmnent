@@ -3,40 +3,35 @@ const { orderData } = require("../models/order");
 
 exports.addToCart = async (req, res, next) => {
     try {
-        let { _id } = req.userData
-        let { quantity, productId } = req.body
-        let getUserCart = await cartData.findOne({
+        const { _id } = req.userData;
+        const { quantity, productId } = req.body;
+
+        if (!productId || !quantity || quantity <= 0) {
+            return res.status(400).send({ message: 'Invalid input data' });
+        }
+
+        let existingCartEntry = await cartData.findOne({
             user_id: _id,
             product_id: productId,
+        });
 
-        })
-
-        let cartObj = {
-            user_id: _id,
-            product_id: productId,
-            quantities: quantity
+        if (existingCartEntry) {
+            existingCartEntry.quantities += quantity;
+            await existingCartEntry.save();
+        } else {
+            await cartData.create({
+                user_id: _id,
+                product_id: productId,
+                quantities: quantity,
+            });
         }
 
-        if (getUserCart) {
-            cartObj.quantities = getUserCart.quantities + quantity
-            let cartResponse = await cartData.update(cartObj,
-                {
-                    user_id: _id,
-                    product_id: productId,
-                });
-        }
-        else {
-            let cartResponse = await cartData.create(cartObj);
-        }
-
-        // if (!prodResponse) throw new Error(404, "Not Found");
-        return res.status(200).send({ message: "Success" });
+        return res.status(200).send({ message: 'Product added to cart' });
     } catch (error) {
-        console.log("error", error);
+        console.error('Error adding product to cart:', error);
         next(error);
     }
 };
-
 
 exports.getCart = async (req, res, next) => {
     let { _id } = req.userData
@@ -48,9 +43,40 @@ exports.getCart = async (req, res, next) => {
                 as: 'product'
             }).exec();
 
-        return res.status(200).send({ message: "Success", data: { cartResponse } });
+        return res.status(200).send({ message: "Success", cartResponse });
     } catch (error) {
         console.log("error", error);
+        next(error);
+    }
+};
+
+
+exports.updateCart = async (req, res, next) => {
+    try {
+        const { _id } = req.userData;
+        const { quantity, productId } = req.body;
+
+        // Validate quantity
+        if (!quantity || quantity <= 0) {
+            return res.status(400).send({ message: 'Invalid quantity' });
+        }
+
+        // Find existing cart entry
+        let existingCartEntry = await cartData.findOne({
+            user_id: _id,
+            product_id: productId,
+        });
+
+        if (existingCartEntry) {
+            existingCartEntry.quantities = quantity;
+            await existingCartEntry.save();
+        } else {
+            console.log('No existing cart entry found');
+        }
+
+        return res.status(200).send({ message: 'Cart updated' });
+    } catch (error) {
+        console.error('Error updating cart:', error);
         next(error);
     }
 };
@@ -61,7 +87,7 @@ exports.createOrder = async (req, res, next) => {
         let { _id } = req.userData
         for (const item of req.body.cartItems) {
             await orderData.create({
-                user_id: id,
+                user_id: _id,
                 product_id: item.product_id,
                 quantity: item.quantities,
                 price: item.price,
@@ -69,7 +95,7 @@ exports.createOrder = async (req, res, next) => {
                 order_updated_at: item.updatedAt,
             });
         }
-        let deleterCart = await orderData.destroy({
+        let deleterCart = await cartData.deleteOne({
             user_id: _id
         })
         return res.status(200).send({ message: "Cart data has been stored" });

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import './../styles/login.css'; // Import your CSS file for styling
 import { app_url, axiosInstance } from '../config/helper';
+import ToastComponent from '../components/global/ToastComponent';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [toast, setToast] = useState(null);
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,9 +22,11 @@ const LoginPage = () => {
     try {
       const loginData = { email, password };
       let response = await axiosInstance.post(app_url + "/login", loginData)
+      console.log("response", response);
       sessionStorage.setItem('token', response.data.data.token);
       window.location.href = "/";
     } catch (error) {
+      setToast({ message: "Email not found.", type: 'warning', variant: 'warning', link: '/Registration', goto: 'Go to Registration' })
       console.log(error);
     }
 
@@ -57,6 +62,16 @@ const LoginPage = () => {
         <div className="form-group">
           <button type="submit">Login</button>
         </div>
+        {toast ? <ToastComponent
+          title={"Take Action."}
+          type={toast.type}
+          variant={toast.variant}
+          message={toast.message}
+          onClose={() => setToast(null)}
+          link={toast.link}
+          goto={toast.goto}
+        />
+          : null}
       </form>
     </div>
   );
