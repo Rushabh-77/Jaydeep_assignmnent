@@ -9,6 +9,7 @@ module.exports = app => {
 
 
 	router.get("/getProduct", productController.getProducts);
+	router.get("/getProduct/:id", productController.getProductDetails);
 	// router.post("/createProduct", productController.cerateProducts);
 
 
